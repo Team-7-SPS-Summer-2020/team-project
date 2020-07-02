@@ -13,7 +13,8 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Initializes the map with custom style in the styledMapType json. Adds
+ * event listener to add a new marker on click
  */
 function createMap() {
     var styledMapType = new google.maps.StyledMapType(
@@ -278,12 +279,35 @@ function createMap() {
     });
 }
 
+/*
+* Creates marker at lat and long coordinates of the click. Adds event listener
+* to markers to display info when clicked, and to delete the marker when double
+* clicked. The server call to retrieve news should be made at the beginning of
+* this function. 
+*/
 function placeMarker(location, map) {
-    console.log("Executing placemarker");
-    var marker = new google.maps.Marker({
+    //Issue request to server here using 'location' to retrieve HTML 'info'
+    let info = "Placeholder";
+
+    let marker = new google.maps.Marker({
         position: location, 
         map: map,
         animation: google.maps.Animation.DROP,
     });
+    let infoWindow = new google.maps.InfoWindow({content: info});
+
+    google.maps.event.addListener(marker, 'click', function(event) {
+        infoWindow.open(map, marker);
+    });
+    google.maps.event.addListener(marker, 'dblclick', function(event) {
+        removeMarker(marker, map);
+    });
+    
     map.panTo(location);
+    setTimeout(() => { infoWindow.open(map, marker); }, 500);
+}
+
+function removeMarker(marker){
+    marker.setMap(null);
+    marker = null;
 }
