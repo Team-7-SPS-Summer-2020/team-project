@@ -22,7 +22,7 @@ async function generateQuery(){
 	let longitude = document.getElementById("lon").value
 	let latitude = document.getElementById("lat").value
 
-	const params = new URLSEARCHPARAMS();
+	const params = new URLSearchParams();
 	params.append("Longitude",longitude);
 	params.append("Latitude",latitude);
 
@@ -31,7 +31,7 @@ async function generateQuery(){
 	await fetch('/data',{ 
 		method: 'POST',
 		body: params
-	}).then(response => response.json())
+	}).then(response => response.text())
 	.then(data => console.log(data)) //server sends lat and lon values to verify success
 	
 
