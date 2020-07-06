@@ -27,8 +27,8 @@ public class DataServlet extends HttpServlet {
   @Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	
-		String longitude = getParameter(request,"Longitude","0");
-		String latitude = getParameter(request,"Latitude", "0");
+		String longitude = getParameter(request,"longitude","0");
+		String latitude = getParameter(request,"latitude", "0");
 
 		response.setContentType("text/html;");
 		response.getWriter().println(longitude.equals("0") && latitude.equals("0") ? "default values used": "latitude: " + latitude + ", longitude: " + longitude);

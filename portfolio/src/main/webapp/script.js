@@ -23,17 +23,14 @@ async function generateQuery(){
 	let latitude = document.getElementById("lat").value
 
 	const params = new URLSearchParams();
-	params.append("Longitude",longitude);
-	params.append("Latitude",latitude);
 
 	//TODO: actually implement fetch() to send or retrieve coordinate results
 
 
-	await fetch('/data',{ 
-		method: 'GET',
-		body: params
-	}).then(response => response.text())
-	.then(data => console.log(data)) //server sends lat and lon values to verify success
-	
+	await fetch(`/data?latitude=${latitude}&longitude=${longitude}`)
+    .then(response => response.text())
+    .then(data => console.log(data))
+
+
 
 }
