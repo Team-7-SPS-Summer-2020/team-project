@@ -28,8 +28,9 @@ async function generateQuery(){
 
 	//TODO: actually implement fetch() to send or retrieve coordinate results
 
+
 	await fetch('/data',{ 
-		method: 'POST',
+		method: 'GET',
 		body: params
 	}).then(response => response.text())
 	.then(data => console.log(data)) //server sends lat and lon values to verify success
