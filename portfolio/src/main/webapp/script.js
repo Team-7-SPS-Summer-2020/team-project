@@ -24,15 +24,24 @@ async function generateQuery(){
 
 	let longitude = document.getElementById("lon").value
 	let latitude = document.getElementById("lat").value
-    let geoCodeRequest = URL + latitude + "," + longitude + KEY;
+    let geoCodeRequest = URL + latitude + "," + longitude + KEY
+	let location = ""
     console.log(geoCodeRequest)
 
-	const params = new URLSearchParams();
+	fetch(geoCodeRequest).then(response => response.json())
+	.then(results => {
+		
+			location = results[0].address_components[5].long_name; // get the common name of the coordinates
+		
+		})
+
+	const params = new URLSearchParams()
 
 	//TODO: actually implement fetch() to send or retrieve coordinate results
 
+	
 
-	await fetch(`/data?latitude=${latitude}&longitude=${longitude}`)
+	await fetch(`/data?location=${location}`)
     .then(response => response.text())
     .then(data => console.log(data))
 
