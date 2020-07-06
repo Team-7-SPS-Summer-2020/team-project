@@ -32,17 +32,17 @@ public class DataServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		long longitude = getParameter(request,"Longitude",0);
-		long latitude = getParameter(request,"Latitude", 0);
+		long longitude = getParameter(request,"Longitude","0");
+		long latitude = getParameter(request,"Latitude", "0");
 
 		response.setContentType("text/html");
-		response.getWriter().println(longitude == 0 && latitude == 0 ? "default values used": "latitude: " + latitude + ", longitude: " + longitude);
+		response.getWriter().println(longitude.equals("0") && latitude.equals("0") ? "default values used": "latitude: " + latitude + ", longitude: " + longitude);
 
 	}
 
-	private long getParameter(HttpServletRequest request, String name, long defaultValue){
+	private String getParameter(HttpServletRequest request, String name, String defaultValue){
 
-		long val = request.getParameter(name);
+		String val = request.getParameter(name);
 
 		return val == null ? defaultValue : val;
 
