@@ -25,8 +25,27 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello world!</h1>");
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	response.setContentType("text/html;");
+   	    response.getWriter().println("<h1>Hello world!</h1>");
   }
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		long longitude = getParameter(request,"Longitude",0);
+		long latitude = getParameter(request,"Latitude", 0);
+
+		response.setContentType("text/html");
+		response.getWriter().println(longitude == 0 && latitude == 0 ? "default values used": "latitude: " + latitude + ", longitude: " + longitude);
+
+	}
+
+	private long getParameter(HttpServletRequest request, String name, long defaultValue){
+
+		long val = request.getParameter(name);
+
+		return val == null ? defaultValue : val;
+
+	}
+
 }
