@@ -17,10 +17,15 @@
 
 */
 
+const KEY = "&key=AIzaSyAAHC0kzUB8IDwJlG0DaP2lLyc_haNkNWs"
+const URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
+
 async function generateQuery(){
 
 	let longitude = document.getElementById("lon").value
 	let latitude = document.getElementById("lat").value
+    let geoCodeRequest = URL + latitude + "," + longitude + KEY;
+    console.log(geoCodeRequest)
 
 	const params = new URLSearchParams();
 
