@@ -28,18 +28,15 @@ async function generateQuery(){
 	let location = ""
     console.log(geoCodeRequest)
 
-	fetch(geoCodeRequest).then(response => response.json())
-	.then(results => {
+	await fetch(geoCodeRequest).then(response => response.json())
+	.then(data => {
 		
-			location = results[0].address_components[5].long_name; // get the common name of the coordinates
+			location = data.results[0].formatted_address; // get the common name of the coordinates
 		
 		})
 
+    console.log(location)
 	const params = new URLSearchParams()
-
-	//TODO: actually implement fetch() to send or retrieve coordinate results
-
-	
 
 	await fetch(`/data?location=${location}`)
     .then(response => response.text())

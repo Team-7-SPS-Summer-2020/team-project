@@ -32,10 +32,10 @@ public class DataServlet extends HttpServlet {
   @Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	
-		String loncation = getParameter(request,"location","");
+		String location = getParameter(request,"location","");
 
 		response.setContentType("text/html;");
-		response.getWriter().println(longitude.size() == 0 ? "Couldn't retrieve request or invalid place.": "locatiom: " + location);
+		response.getWriter().println(location.length() == 0 ? "Couldn't retrieve request or invalid place.": "location: " + location);
   }
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
