@@ -20,13 +20,14 @@
 const KEY = "&key=AIzaSyAAHC0kzUB8IDwJlG0DaP2lLyc_haNkNWs"
 const URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
 
-async function generateQuery(){
+async function generateQuery(longitude,latitude){ // function wont have parameters this is just for offline testing.
 
-	let longitude = document.getElementById("lon").value
-	let latitude = document.getElementById("lat").value
-    let geoCodeRequest = URL + latitude + "," + longitude + KEY
+	//let longitude = document.getElementById("lon").value // from the dummy html made for testing purpouses
+	//let latitude = document.getElementById("lat").value
+
+    let geoCodeRequest = URL + latitude + "," + longitude + KEY // creating the search Key to get human readable location
 	let location = ""
-    console.log(geoCodeRequest)
+    console.log(geoCodeRequest) //Incase we want to look at the entire JSON in browser
 
 	await fetch(geoCodeRequest).then(response => response.json())
 	.then(data => {
@@ -35,13 +36,16 @@ async function generateQuery(){
 		
 		})
 
-    console.log(location)
+    console.log(location) //For Debugging
 	const params = new URLSearchParams()
 
-	await fetch(`/data?location=${location}`)
+	await fetch(`/data?location=${location}`) //sending location name to servelt
     .then(response => response.text())
-    .then(data => console.log(data))
+    .then(data => console.log(data)) // Servlet sends ACK by sending back the location it recieved.
 
 
 
 }
+
+generateQuery(30.03,20.8998)
+generateQuery(-100.3530337,31.31643)
