@@ -26,3 +26,11 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+function fetchNews() {
+    fetch("/data")
+        .then(function(response) {
+
+            console.log("a di json dis -->", response);
+        })
+}
