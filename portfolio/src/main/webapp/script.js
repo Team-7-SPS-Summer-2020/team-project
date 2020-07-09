@@ -18,7 +18,7 @@
 */
 
 const KEY = "&key=AIzaSyAAHC0kzUB8IDwJlG0DaP2lLyc_haNkNWs;"
-const URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
+const URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=;"
 
 async function generateQuery(longitude,latitude){ // function wont have parameters this is just for offline testing.
 
