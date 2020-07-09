@@ -33,41 +33,14 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
-    String s = null;
-
-        try {
-            Process p = Runtime.getRuntime()
-            .exec("python3 ../../src/main/java/com/google/sps/servlets/script.py");
-            
-            BufferedReader stdInput = new BufferedReader(new 
-                 InputStreamReader(p.getInputStream()));
-
-            BufferedReader stdError = new BufferedReader(new 
-                 InputStreamReader(p.getErrorStream()));
-
-            // read the output from the command
-            System.out.println("Here is the standard output of the command:\n");
-            while ((s = stdInput.readLine()) != null) {
-                System.out.println(s.getClass().getName());
-                System.out.println(s);
-                response.setContentType("application/json;");
-                response.getWriter().println(s);
-            }
-            
-            // read any errors from the attempted command
-            System.out.println("Here is the standard error of the command (if any):\n");
-            while ((s = stdError.readLine()) != null) {
-                System.out.println(s);
-            }
-            
-        }
-        catch (IOException e) {
-            System.out.println("exception happened - here's what I know: ");
-            e.printStackTrace();
-            System.exit(-1);
-        }
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(new URI("http://newsapi.org/v2/top-headlines?country=us&apiKey=96317a20b027446da228dce495ce6af7"))
+        .version(HttpClient.Version.HTTP_2)
+        .GET()
+        .build();
+        
+        response.setContentType("application/json;");
+        response.getWriter().println(request);
   }
 }
 
-// NewsAPI key: 96317a20b027446da228dce495ce6af7
