@@ -34,7 +34,10 @@ async function generateQuery(longitude,latitude){ // function wont have paramete
 		
 			location = data.results[0].formatted_address; // get the common name of the coordinates
 		
-		})
+let response = fetch(geoCodeRequest);
+let data = response.json();
+location = data.results[0].formatted_address;
+
 
     console.log(location) //For Debugging
 	const params = new URLSearchParams()
