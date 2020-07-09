@@ -30,7 +30,8 @@ function addRandomGreeting() {
 function fetchNews() {
     fetch("/data")
         .then(function(response) {
-
-            console.log("a di json dis -->", response);
+            console.log("Top Headlines -->", response.json());
+            // const greetingContainer = document.getElementById('greeting-container');
+            // greetingContainer.innerText = response.json();
         })
 }
