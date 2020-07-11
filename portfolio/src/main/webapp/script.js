@@ -13,14 +13,20 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
 
-*/
+    A function that takes a long anf lat value and returns a human readable location
+    @param longitude is the long value of the marker
+    @param latitude is the lat value of the marker
+    @returns location which is the human readable address of the longitude and latitude vals
+
+ */
+
+
 
 const KEY = "&key=AIzaSyAAHC0kzUB8IDwJlG0DaP2lLyc_haNkNWs";
 const URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 
-async function generateQuery(longitude,latitude){ // function wont have parameters this is just for offline testing.
+async function getCoordinatesName(longitude,latitude){ // function wont have parameters this is just for offline testing.
 
     let location = ""
     let geoCodeRequest = URL + latitude + "," + longitude + KEY // creating the search Key to get human readable location
@@ -36,13 +42,14 @@ async function generateQuery(longitude,latitude){ // function wont have paramete
     })
     console.log(location) //For Debugging
 
-	await fetch(`/data?location=${location}`) //sending location name to servlet
+	results = await fetch(`/data?location=${location}`) //sending location name to servlet
     .then(response => response.text())
     .then(data => console.log(data)) // Servlet sends ACK by sending back the location it recieved.
 
+    return location;
 
 }
 
 
-generateQuery(30.03,20.8998)
-generateQuery(-100.3530337,31.31643)
+getCoordinatesName(30.03,20.8998)
+getCoordinatesName(-100.3530337,31.31643)
