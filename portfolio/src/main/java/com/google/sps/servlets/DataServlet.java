@@ -37,14 +37,11 @@ public class DataServlet extends HttpServlet {
 		response.setContentType("text/html;"); // can be made into JSON but for not text works for troubleshooting
         
         //Helps us troubleshoot whether or not we actually recieved anything from client
-		response.getWriter().println(location.length() == 0 ? "Couldn't retrieve request or invalid place.": "location: " + location);
+        if(location.length() == 0)
+             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+             
+		response.getWriter().println("location: " + location);
   }
-	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-
-
-	}
 
 	private String getParameter(HttpServletRequest request, String name, String defaultValue){
 
