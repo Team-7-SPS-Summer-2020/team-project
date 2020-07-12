@@ -35,13 +35,17 @@ import java.util.List;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/fetchNews")
-public class DataServlet extends HttpServlet {
+public class NewsServlet extends HttpServlet {
     OkHttpClient client = new OkHttpClient();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String location = getParameter(request, "location", "");
+    String apiUrl = "https://newsapi.org/v2/everything?apiKey=96317a20b027446da228dce495ce6af7";
+    String apiUrlrequest = apiUrl + "&q=" + location;
+
     Request okRequest = new Request.Builder()
-    .url("https://newsapi.org/v2/everything?apiKey=96317a20b027446da228dce495ce6af7&q=Jamaica")
+    .url(apiUrlrequest)
     .build();
 
     try (Response okResponse = client.newCall(okRequest).execute()) {
@@ -62,6 +66,14 @@ public class DataServlet extends HttpServlet {
       String url;
       String image;
   }
+
+	
+
+    private String getParameter(HttpServletRequest request, String name, String defaultValue){
+        
+        String val = request.getParameter(name);
+        return val == null ? defaultValue : val;
+    }   
 
   static class NewsApiResponse {
       String status;
