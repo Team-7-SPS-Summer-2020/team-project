@@ -13,25 +13,22 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ To fetch & parse news articles from the NewsAPI
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
-}
-
-function fetchNews() {
-    fetch("/data")
-        .then(function(response) {
-            console.log("Top Headlines -->", response.json());
-            // const greetingContainer = document.getElementById('greeting-container');
-            // greetingContainer.innerText = response.json();
+async function fetchNews() {
+    await fetch("/fetchNews")
+        .then(response => response.json())
+        .then(articles => {
+            const newsContainer = document.getElementById('news-container');
+            
+            if(articles.status !== 'ok'){
+                newsContainer.innerText = "We were unable to find anything on this";
+            }else{   
+                console.log(articles.articles);
+                newsContainer.innerText = articles.articles[0].title;
+            }
         })
+    
 }
+

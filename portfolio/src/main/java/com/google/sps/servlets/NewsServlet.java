@@ -26,21 +26,47 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import com.google.gson.Gson;
+import java.util.List;
+
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
+@WebServlet("/fetchNews")
 public class DataServlet extends HttpServlet {
+    OkHttpClient client = new OkHttpClient();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      HttpRequest request = HttpRequest.newBuilder()
-        .uri(new URI("http://newsapi.org/v2/top-headlines?country=us&apiKey=96317a20b027446da228dce495ce6af7"))
-        .version(HttpClient.Version.HTTP_2)
-        .GET()
-        .build();
+    Request okRequest = new Request.Builder()
+    .url("https://newsapi.org/v2/everything?apiKey=96317a20b027446da228dce495ce6af7&q=Jamaica")
+    .build();
+
+    try (Response okResponse = client.newCall(okRequest).execute()) {
+      if (!okResponse.isSuccessful()) {
+          throw new IOException("Unexpected code " + okResponse);
+      }
         
+        Gson gson = new Gson();
+        NewsApiResponse newsApiResponse = gson.fromJson(okResponse.body().string(), NewsApiResponse.class);
         response.setContentType("application/json;");
-        response.getWriter().println(request);
+        response.getWriter().println(gson.toJson(newsApiResponse));
+    }
+  }
+
+ static class Article {
+      String title;
+      String description;
+      String url;
+      String image;
+  }
+
+  static class NewsApiResponse {
+      String status;
+      int totalResults;
+      List<Article> articles;
+
   }
 }
-
