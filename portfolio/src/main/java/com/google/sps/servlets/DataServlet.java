@@ -26,21 +26,38 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.gson.Gson;
+
+
+
+
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      HttpRequest request = HttpRequest.newBuilder()
-        .uri(new URI("http://newsapi.org/v2/top-headlines?country=us&apiKey=96317a20b027446da228dce495ce6af7"))
-        .version(HttpClient.Version.HTTP_2)
-        .GET()
-        .build();
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	
+		String location = getParameter(request,"location",""); //get query parameter
+
+		response.setContentType("text/html;"); // can be made into JSON but for not text works for troubleshooting
         
-        response.setContentType("application/json;");
-        response.getWriter().println(request);
+        //Helps us troubleshoot whether or not we actually recieved anything from client
+        if(location.length() == 0)
+             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+             
+		response.getWriter().println("location: " + location);
   }
+
+	private String getParameter(HttpServletRequest request, String name, String defaultValue){
+
+		String val = request.getParameter(name);
+
+		return val == null ? defaultValue : val;
+
+	}
+
 }
 

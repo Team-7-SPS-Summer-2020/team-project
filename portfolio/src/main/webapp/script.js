@@ -13,25 +13,43 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+
+    A function that takes a long anf lat value and returns a human readable location
+    @param longitude is the long value of the marker
+    @param latitude is the lat value of the marker
+    @returns location which is the human readable address of the longitude and latitude vals
+
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+
+const KEY = "&key=AIzaSyAAHC0kzUB8IDwJlG0DaP2lLyc_haNkNWs";
+const URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+
+async function getCoordinatesName(longitude,latitude){ // function wont have parameters this is just for offline testing.
+
+    let location = ""
+    let geoCodeRequest = URL + latitude + "," + longitude + KEY // creating the search Key to get human readable location
+    console.log(geoCodeRequest) //Incase we want to look at the entire JSON in browser
+    
+
+	await fetch(geoCodeRequest).then(response => response.json())
+	.then(data => {
+		
+			location = data.results[0].formatted_address; // get the common name of the coordinates
+		
+
+    })
+    console.log(location) //For Debugging
+
+	results = await fetch(`/data?location=${location}`) //sending location name to servlet
+    .then(response => response.text())
+    .then(data => console.log(data)) // Servlet sends ACK by sending back the location it recieved.
+
+    return location;
+
 }
 
-function fetchNews() {
-    fetch("/data")
-        .then(function(response) {
-            console.log("Top Headlines -->", response.json());
-            // const greetingContainer = document.getElementById('greeting-container');
-            // greetingContainer.innerText = response.json();
-        })
-}
+
+getCoordinatesName(30.03,20.8998)
+getCoordinatesName(-100.3530337,31.31643)
