@@ -285,15 +285,17 @@ function createMap() {
 * clicked. The server call to retrieve news should be made at the beginning of
 * this function. 
 */
-function placeMarker(location, map) {
+async function placeMarker(location, map) {
     //Issue request to server here using 'location' to retrieve HTML 'info'
-    const info = "Placeholder";
 
     let marker = new google.maps.Marker({
         position: location, 
         map: map,
         animation: google.maps.Animation.DROP,
     });
+
+    info = await getCoordinatesName(marker.getPosition().lng(),marker.getPosition().lat())
+
     let infoWindow = new google.maps.InfoWindow({content: info});
 
     google.maps.event.addListener(marker, 'click', function(event) {
@@ -345,10 +347,6 @@ async function getCoordinatesName(longitude,latitude){ // function wont have par
     .then(response => response.text())
     .then(data => console.log(data)) // Servlet sends ACK by sending back the location it recieved.
 
-    return location;
+    return location+"";
 
 }
-
-
-getCoordinatesName(30.03,20.8998)
-getCoordinatesName(-100.3530337,31.31643)
