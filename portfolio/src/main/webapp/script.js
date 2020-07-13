@@ -353,5 +353,3 @@ async function getCoordinatesName(longitude,latitude){ // function wont have par
     return location+"";
 
 }
-
-
