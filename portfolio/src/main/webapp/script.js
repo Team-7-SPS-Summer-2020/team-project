@@ -307,9 +307,6 @@ async function placeMarker(location, map) {
     
     map.panTo(location);
     setTimeout(() => { infoWindow.open(map, marker); }, 500);
-
-    
- 
 }
 
 function removeMarker(marker){
