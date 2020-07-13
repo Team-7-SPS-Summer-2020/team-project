@@ -294,6 +294,10 @@ async function placeMarker(location, map) {
         animation: google.maps.Animation.DROP,
     });
 
+    info = await getCoordinatesName(marker.getPosition().lng(),marker.getPosition().lat())
+
+    let infoWindow = new google.maps.InfoWindow({content: info});
+
     google.maps.event.addListener(marker, 'click', function(event) {
         infoWindow.open(map, marker);
     });
@@ -304,9 +308,7 @@ async function placeMarker(location, map) {
     map.panTo(location);
     setTimeout(() => { infoWindow.open(map, marker); }, 500);
 
-    info = await getCoordinatesName(marker.getPosition().lng(),marker.getPosition().lat())
-
-    let infoWindow = new google.maps.InfoWindow({content: info});
+    
  
 }
 
