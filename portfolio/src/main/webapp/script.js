@@ -18,7 +18,7 @@
  */
 
 async function fetchNews(location) {
-    await fetch(`/fetchNews?location=${location}`)
+    return await fetch(`/fetchNews?location=${location}`)
         .then(response => response.json())
         .then(articles => {
             
