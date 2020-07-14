@@ -59,23 +59,20 @@ public class NewsServlet extends HttpServlet {
         response.getWriter().println(gson.toJson(newsApiResponse));
     }
   }
+	
+private String getParameter(HttpServletRequest request, String name, String defaultValue){
+        String val = request.getParameter(name);
+        return val == null ? defaultValue : val;
+    }
 
- static class Article {
+static class Article {
       String title;
       String description;
       String url;
       String image;
   }
-
 	
-
-    private String getParameter(HttpServletRequest request, String name, String defaultValue){
-        
-        String val = request.getParameter(name);
-        return val == null ? defaultValue : val;
-    }   
-
-  static class NewsApiResponse {
+ static class NewsApiResponse {
       String status;
       int totalResults;
       List<Article> articles;
