@@ -20,17 +20,6 @@
 async function fetchNews(location) {
     return await fetch(`/fetchNews?location=${location}`)
         .then(response => response.json())
-        .then(articles => {
-            
-            const newsContainer = document.getElementById('news-container');
-            if(articles.status !== 'ok'){
-                newsContainer.innerText = "We were unable to find anything on this";
-            }else{   
-                console.log(articles.articles);
-                newsContainer.innerText = articles.articles[0].title;
-            }
-        })
-    
 }
 
 /**
