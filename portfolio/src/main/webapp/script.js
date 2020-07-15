@@ -331,12 +331,20 @@ function removeMarker(marker){
     A function that takes a long anf lat value and returns a human readable location
     @param longitude is the long value of the marker
     @param latitude is the lat value of the marker
-    @returns location which is the human readable address of the longitude and latitude vals
+    @returns location which is the human readable address of the longitude and latitude vals if no human readable address
+    found it will return an empty string
 
  */
 
 const KEY = "&key=AIzaSyAAHC0kzUB8IDwJlG0DaP2lLyc_haNkNWs";
 const URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+
+/**
+
+    @todo Figure out how to go one tier more specific and include a city name (if applicable) along with the country name
+    @todo Potentially figure out how to include unaddresses places like Moracco or Pacific Ocean
+    
+ */
 
 async function getCoordinatesName(longitude,latitude){ // function wont have parameters this is just for offline testing.
 
@@ -348,7 +356,20 @@ async function getCoordinatesName(longitude,latitude){ // function wont have par
 	await fetch(geoCodeRequest).then(response => response.json())
 	.then(data => {
 		
-			location = data.results[0].formatted_address; // get the common name of the coordinates
+            if(data.results.length != 0){ // Some countries and places dont have addresses. Like the Pacific Ocean or the Western Saharaa in Morocco
+
+			addressPieces = data.results[0].formatted_address.split(','); // splits response into array. End of array is usually counntry name.
+            index = addressPieces.length-1;
+
+            while(!isNaN(addressPieces[index]) && index >= 0)
+                index--;
+
+            if(index > -1) // there is a human readable country name
+                location = addressPieces[index];
+            else // no human readable result. Better to return empty String
+                console.log("Location only had a num address")
+            
+            }
 		
 
     })
@@ -358,6 +379,6 @@ async function getCoordinatesName(longitude,latitude){ // function wont have par
     .then(response => response.text())
     .then(data => console.log(data)) // Servlet sends ACK by sending back the location it recieved.
 
-    return location+"";
+    return location;
 
 }
