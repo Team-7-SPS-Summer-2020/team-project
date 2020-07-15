@@ -13,6 +13,17 @@
 // limitations under the License.
 
 /**
+ To fetch & parse news articles from the NewsAPI
+    @param location name of the place we are asking the NewsApi about.
+ */
+
+async function fetchNews(location) {
+    return await fetch(`/fetchNews?location=${location}`)
+        .then(response => response.json())
+}
+
+/**
+
  * Initializes the map with custom style in the styledMapType json. Adds
  * event listener to add a new marker on click
  */
@@ -322,7 +333,7 @@ function removeMarker(marker){
     @param latitude is the lat value of the marker
     @returns location which is the human readable address of the longitude and latitude vals
 
-*/
+ */
 
 const KEY = "&key=AIzaSyAAHC0kzUB8IDwJlG0DaP2lLyc_haNkNWs";
 const URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";

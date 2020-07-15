@@ -15,19 +15,28 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
+import java.net.*;
+import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.lang.String;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import com.google.gson.Gson;
-
-
-
+import java.util.List;
 
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+    OkHttpClient client = new OkHttpClient();
 
   @Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
