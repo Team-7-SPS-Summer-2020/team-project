@@ -1,9 +1,11 @@
-#content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+#header {
+  text-align: center;
+  margin:auto;
 }
 
-#greeting-container {
-  margin-top: 20px;
+#map {
+  position: absolute;
+  top: 75px;
+  bottom: 0px;
+  width: 100%;
 }
