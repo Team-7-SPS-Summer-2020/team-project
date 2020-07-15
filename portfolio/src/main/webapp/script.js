@@ -339,6 +339,13 @@ function removeMarker(marker){
 const KEY = "&key=AIzaSyAAHC0kzUB8IDwJlG0DaP2lLyc_haNkNWs";
 const URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 
+/**
+
+    @todo Figure out how to go one tier more specific and include a city name (if applicable) along with the country name
+    @todo Potentially figure out how to include unaddresses places like Moracco or Pacific Ocean
+    
+ */
+
 async function getCoordinatesName(longitude,latitude){ // function wont have parameters this is just for offline testing.
 
     let location = ""
@@ -349,7 +356,8 @@ async function getCoordinatesName(longitude,latitude){ // function wont have par
 	await fetch(geoCodeRequest).then(response => response.json())
 	.then(data => {
 		
-            
+            if(data.results.length != 0){ // Some countries and places dont have addresses. Like the Pacific Ocean or the Western Saharaa in Morocco
+
 			addressPieces = data.results[0].formatted_address.split(','); // splits response into array. End of array is usually counntry name.
             index = addressPieces.length-1;
 
@@ -360,6 +368,8 @@ async function getCoordinatesName(longitude,latitude){ // function wont have par
                 location = addressPieces[index];
             else // no human readable result. Better to return empty String
                 console.log("Location only had a num address")
+            
+            }
 		
 
     })
