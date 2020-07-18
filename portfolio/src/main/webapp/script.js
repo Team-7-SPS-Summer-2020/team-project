@@ -306,8 +306,12 @@ async function placeMarker(location, map) {
     });
 
     let locationName = await getCoordinatesName(marker.getPosition().lng(),marker.getPosition().lat());
-    info = await fetchNews(locationName);
-    let infoWindow = new google.maps.InfoWindow({content: getInfoWindow(info['articles'], locationName)});
+    let info = await fetchNews(locationName);
+    let infoWindow = new google.maps.InfoWindow({
+        content: getArticleList(info['articles'], locationName),
+        maxWidth:400,
+        maxHeight:600
+    });
 
     google.maps.event.addListener(marker, 'click', function(event) {
         infoWindow.open(map, marker);
@@ -317,7 +321,7 @@ async function placeMarker(location, map) {
     });
     
     map.panTo(location);
-    setTimeout(() => { infoWindow.open(map, marker); }, 500);
+    infoWindow.open(map, marker);
 }
 
 
@@ -332,7 +336,7 @@ function removeMarker(marker){
 * @param articles - List of jsons representing articles
 * @param place - Locations articles are about as a string
 */
-function getInfoWindow(articles, place){
+function getArticleList(articles, place){
     var view = {
         place: place,
         articles: articles

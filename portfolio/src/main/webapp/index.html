@@ -15,13 +15,17 @@
     </div>
     <div id="map"></div>
   </body>
-<div id= "template">
-  <h4>Current News for {{place}}</h4>
-  <ul>
-    {{#articles}}
-      <li> <a href = {{{url}}}>{{title}}</a> </li>
-    {{/articles}}
-  </ul>
+
+<!-- Hidden div with mustache template for infowindows-->
+<div style="visibility: hidden">
+  <div id= "template">
+    <h4>Current News for {{place}}</h4>
+    <ul>
+      {{#articles}}
+        <li> <a href= onclick="window.open({});return false;"{{{url}}}>{{title}}</a> </li>
+      {{/articles}}
+    </ul>
+  </div>
+  <div id="articleList">Loading...</div>
 </div>
-<div id="articleList">Loading...</div>
 </html>
