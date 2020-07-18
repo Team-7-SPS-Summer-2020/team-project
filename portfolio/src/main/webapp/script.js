@@ -305,6 +305,13 @@ async function placeMarker(location, map) {
         animation: google.maps.Animation.DROP,
     });
 
+    let loading = new google.maps.InfoWindow({
+        content: 'Loading...',
+        maxWidth: 400,
+        maxHeight: 300
+    });
+    loading.open(map, marker);
+
     let locationName = await getCoordinatesName(marker.getPosition().lng(),marker.getPosition().lat());
     let info = await fetchNews(locationName);
     let infoWindow = new google.maps.InfoWindow({
@@ -317,10 +324,11 @@ async function placeMarker(location, map) {
         infoWindow.open(map, marker);
     });
     google.maps.event.addListener(marker, 'dblclick', function(event) {
-        removeMarker(marker, map);
+        removeMarker(marker);
     });
     
     map.panTo(location);
+    loading.close();
     infoWindow.open(map, marker);
 }
 
@@ -333,7 +341,8 @@ function removeMarker(marker){
 /*
 * Returns HTML templated list of article links as a string
 *
-* @param articles - List of jsons representing articles
+* @param articles - List of jsons representing articles, with each json having a 
+*  'url' and 'title' key
 * @param place - Locations articles are about as a string
 */
 function getArticleList(articles, place){
