@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <script src="script.js"></script>
+    <script type="module" src="mustache.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF2xVf9qVKBvifBBpZPsw19uKSuM_hYTM"></script>
   </head>
   <body onload="createMap();">
@@ -14,4 +15,13 @@
     </div>
     <div id="map"></div>
   </body>
+<div id= "template">
+  <h4>Current News for {{place}}</h4>
+  <ul>
+    {{#articles}}
+      <li> <a href = {{{url}}}>{{title}}</a> </li>
+    {{/articles}}
+  </ul>
+</div>
+<div id="articleList">Loading...</div>
 </html>

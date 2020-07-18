@@ -23,7 +23,6 @@ async function fetchNews(location) {
 }
 
 /**
-
  * Initializes the map with custom style in the styledMapType json. Adds
  * event listener to add a new marker on click
  */
@@ -293,21 +292,22 @@ function createMap() {
 /*
 * Creates marker at lat and long coordinates of the click. Adds event listener
 * to markers to display info when clicked, and to delete the marker when double
-* clicked. The server call to retrieve news should be made at the beginning of
-* this function. 
+* clicked. Retrieves list of articles from server, and uses it in call to 
+* getInfoWindow(). 
+*
+* @param location - the latitude and longitude values at which to place the marker
+* @param map - the map object that markers are being placed on
 */
 async function placeMarker(location, map) {
-    //Issue request to server here using 'location' to retrieve HTML 'info'
-
     let marker = new google.maps.Marker({
         position: location, 
         map: map,
         animation: google.maps.Animation.DROP,
     });
 
-    info = await getCoordinatesName(marker.getPosition().lng(),marker.getPosition().lat())
-
-    let infoWindow = new google.maps.InfoWindow({content: info});
+    let locationName = await getCoordinatesName(marker.getPosition().lng(),marker.getPosition().lat());
+    info = await fetchNews(locationName);
+    let infoWindow = new google.maps.InfoWindow({content: getInfoWindow(info['articles'], locationName)});
 
     google.maps.event.addListener(marker, 'click', function(event) {
         infoWindow.open(map, marker);
@@ -320,11 +320,29 @@ async function placeMarker(location, map) {
     setTimeout(() => { infoWindow.open(map, marker); }, 500);
 }
 
+
 function removeMarker(marker){
     marker.setMap(null);
     marker = null;
 }
 
+/*
+* Returns HTML templated list of article links as a string
+*
+* @param articles - List of jsons representing articles
+* @param place - Locations articles are about as a string
+*/
+function getInfoWindow(articles, place){
+    var view = {
+        place: place,
+        articles: articles
+    };
+    var template = document.getElementById('template').innerHTML;
+    var rendered = Mustache.render(template, view);
+    document.getElementById('articleList').innerHTML = rendered;
+
+    return document.getElementById('articleList').innerHTML;
+}
 
 
 /*
