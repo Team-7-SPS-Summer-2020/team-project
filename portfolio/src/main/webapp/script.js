@@ -358,7 +358,7 @@ function getArticleList(articles, place){
 }
 
 
-/*
+/** 
     A function that takes a long anf lat value and returns a human readable location
     @param longitude is the long value of the marker
     @param latitude is the lat value of the marker
@@ -372,7 +372,6 @@ const URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 
 /**
 
-    @todo Figure out how to go one tier more specific and include a city name (if applicable) along with the country name
     @todo Potentially figure out how to include unaddresses places like Moracco or Pacific Ocean
     
  */
@@ -382,34 +381,72 @@ async function getCoordinatesName(longitude,latitude){ // function wont have par
     let location = ""
     let geoCodeRequest = URL + latitude + "," + longitude + KEY // creating the search Key to get human readable location
     console.log(geoCodeRequest) //Incase we want to look at the entire JSON in browser
-    
 
-	await fetch(geoCodeRequest).then(response => response.json())
-	.then(data => {
-		
-            if(data.results.length != 0){ // Some countries and places dont have addresses. Like the Pacific Ocean or the Western Saharaa in Morocco
-
-			addressPieces = data.results[0].formatted_address.split(','); // splits response into array. End of array is usually counntry name.
-            index = addressPieces.length-1;
-
-            while(!isNaN(addressPieces[index]) && index >= 0)
-                index--;
-
-            if(index > -1) // there is a human readable country name
-                location = addressPieces[index];
-            else // no human readable result. Better to return empty String
-                console.log("Location only had a num address")
-            
-            }
-		
-
-    })
+    location = await parseGeoCodingResults(geoCodeRequest)
     console.log(location) //For Debugging
 
-	results = await fetch(`/data?location=${location}`) //sending location name to servlet
-    .then(response => response.text())
-    .then(data => console.log(data)) // Servlet sends ACK by sending back the location it recieved.
+    return location;
+
+}
+
+/**
+
+    A function that handles parsing of the JSON response to generate an accurate address location
+    @param request is the API request String
+    @returns a string that either has only Country name, or Country Name with state/provinance, or empty string if there are no valid results
+
+ */
+
+async function parseGeoCodingResults(request){
+
+    let location = '';
+    
+    await fetch(request).then(response => response.json()) // call fetch on the coordinates
+    .then(data => {
+
+       if(data.results.length != 0){ // if the API returns nothing then return empty string
+
+           address = data.results[data.results.length-1].formatted_address; // This will initially only get the name of the country
+           
+           if(isNaN(address)){ // incase there is a place that only has a zipcode location will be emtpy
+
+               location = address; // at this point location is holding country name
+               index = data.results.length-2;
+
+               for(;index >= 0; index--){ // check for other address formats. We want an address with 2 names and no numbers in either name
+
+                   pieces = data.results[index].formatted_address.split(',')
+                   if(pieces.length == 2 && !hasNumber(data.results[index].formatted_address)){
+
+                       location = data.results[index].formatted_address 
+                       break;// found a valid address no need to keep looping
+
+                   }
+
+               }
+               
+           }
+
+
+       }
+
+    })
 
     return location;
+
+}
+
+/**
+
+    Checkes to see if a string has any numbers
+    @param string you want to check
+    @returns true if string has numbers and false if no numbers in the string
+
+ */
+
+function hasNumber(string){
+
+    var regex = /\d/g; //regular expression of numbers
+    return regex.test(string); // check to see if numbers exist in the string
 
 }
